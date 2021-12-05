@@ -1,18 +1,29 @@
-import sys
-import subprocess
+import pyautogui
+import keyboard
+import PySimpleGUI as sg
+from pynput.mouse import Listener as M
+from pynput.keyboard import Listener as K
 
-__hex__,__argv__ = [
-	0x08, 0x00, 0x0a,
-	0x3a, 0x30, 0x39,
-	0x41, 0x46, 
-],sys.argv[1];
+default_status, status =\
+        "NO_STATUS",[
+                "Recording...",
+                "Stopped!",
+                "Playing..."
+                ];
 
-def __main__(_0x78,_0x79):
-	__0xfff__, = {
-		1, lambda x : exec(""),
-		2, lambda y : exec(""),
-		3, lambda z : exec(""),
-	};
+layout = [
+        [sg.Text(default_status,size=(40,1),key='-STATUS-')],
+        [sg.Button('Record'),
+                sg.Button('Play'), 
+                sg.Button('Stop')],
+        ];
 
-if __name__ == '__main__':
-	__main__(__hex__,__argv__)
+window = sg.Window('Macro Maker', layout);
+
+
+m={'Record':lambda:window['-STATUS-'].update(status[0]),'Stop':lambda:window['-STATUS-'].update(status[1]),'Play':lambda:window['-STATUS-'].update(status[2])};
+
+while True:
+    event, values = window.read()
+    m[event]()
+window.close()
